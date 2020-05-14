@@ -1,6 +1,6 @@
 
-const numeric = require('../lib/numeric.js')
-const Chain = require('./chain')
+let numeric = require('../lib/numeric.js')
+let Chain = require('./chain')
 
 module.exports = class Circuit {
 	
@@ -8,7 +8,7 @@ module.exports = class Circuit {
 		
 		this.size = size
 		this.gates = []
-		const squared = Math.pow(2, size)
+		let squared = Math.pow(2, size)
 		this.amplitudes = new numeric.T(numeric.rep([squared], 0), numeric.rep([squared], 0))
 		this.amplitudes.x[parseInt('0000000000', 2)] = 1
 		this.chain = new Chain(this)
@@ -73,9 +73,9 @@ module.exports = class Circuit {
 	
 	controlled(U) {
 		
-		const m = U.x.length
-		const Mx = numeric.identity(m * 2)
-		const My = numeric.rep([m * 2, m * 2], 0)
+		let m = U.x.length
+		let Mx = numeric.identity(m * 2)
+		let My = numeric.rep([m * 2, m * 2], 0)
 		for (let i = 0; i < m; i++) {
 			for (let j = 0; j < m; j++) {
 				Mx[i + m][j + m] = U.x[i][j]
@@ -90,8 +90,8 @@ module.exports = class Circuit {
 	
 	expandMatrix(size, U, qubits) {
 		
-		const qubits_ = []
-		const n = Math.pow(2, size)
+		let qubits_ = []
+		let n = Math.pow(2, size)
 		qubits = qubits.slice(0)
 		for (let i = 0; i < qubits.length; i++) {
 			qubits[i] = (size - 1) - qubits[i]
@@ -102,8 +102,8 @@ module.exports = class Circuit {
 				qubits_.push(i)
 			}
 		}
-		const X = numeric.rep([n, n], 0)
-		const Y = numeric.rep([n, n], 0)
+		let X = numeric.rep([n, n], 0)
+		let Y = numeric.rep([n, n], 0)
 		let i = n
 		while (i--) {
 			let j = n
