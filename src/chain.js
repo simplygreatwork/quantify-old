@@ -5,7 +5,7 @@ module.exports = class Chain {
 		
 		this.circuit = circuit
 		this.simple(require('./gates'))
-		if (false) this.compound(require('./gates/compound/index'))
+		// this.compound(require('./gates/compound/index'))
 	}
 	
 	simple(gates) {
