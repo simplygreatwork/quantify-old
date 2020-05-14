@@ -37,9 +37,9 @@ module.exports = class Circuit {
 	print() {
 		
 		this.amplitudes = this.amplitudes.div(this.amplitudes.norm2())
-		for (let i = 0; i < this.amplitudes.x.length; i++) {
+		this.amplitudes.x.forEach(function(each, i) {
 			console.log(`|${this.state_(i)}> ${this.amplitude_(i)} ${this.probability_(i)}`)
-		}
+		}.bind(this))
 		return this
 	}
 	
