@@ -3345,9 +3345,9 @@ module.exports = class Circuit {
 	print() {
 		
 		this.amplitudes = this.amplitudes.div(this.amplitudes.norm2())
-		for (let i = 0; i < this.amplitudes.x.length; i++) {
+		this.amplitudes.x.forEach(function(each, i) {
 			console.log(`|${this.state_(i)}> ${this.amplitude_(i)} ${this.probability_(i)}`)
-		}
+		}.bind(this))
 		return this
 	}
 	
@@ -3552,7 +3552,9 @@ gates.srn = function() {
 module.exports = {
 	circuit: require('./circuit'),
 	gates: require('./gates'),
-	chain: require('./chain')
+	chain: require('./chain'),
+	numeric: require('../lib/numeric')
 }
-},{"./chain":2,"./circuit":3,"./gates":4}]},{},[5])(5)
+
+},{"../lib/numeric":1,"./chain":2,"./circuit":3,"./gates":4}]},{},[5])(5)
 });
