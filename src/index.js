@@ -2,5 +2,6 @@
 module.exports = {
 	circuit: require('./circuit'),
 	gates: require('./gates'),
-	chain: require('./chain')
+	chain: require('./chain'),
+	numeric: require('../lib/numeric')
 }
