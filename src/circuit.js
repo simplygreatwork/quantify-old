@@ -24,12 +24,12 @@ module.exports = class Circuit {
 		
 		this.gates.forEach(function(gate, index) {
 			console.log(`Evaluating gate ${index + 1} of ${this.gates.length}.`)
-			let U = gate.matrix(gate.targets.length)
+			let matrix = gate.matrix(gate.targets.length)
 			gate.controls.forEach(function(control) {
-				U = this.controlled(U)
+				matrix = this.controlled(matrix)
 			}.bind(this))
 			const qubits = gate.controls.concat(gate.targets)
-			this.amplitudes = this.expandMatrix(this.size, U, qubits).dot(this.amplitudes)
+			this.amplitudes = this.expand(matrix, this.size, qubits).dot(this.amplitudes)
 		}.bind(this))
 		return this
 	}
@@ -71,15 +71,15 @@ module.exports = class Circuit {
 	
 	// Returns a version of U controlled by first qubit
 	
-	controlled(U) {
+	controlled(matrix) {
 		
-		const m = U.x.length
+		const m = matrix.x.length
 		const Mx = numeric.identity(m * 2)
 		const My = numeric.rep([m * 2, m * 2], 0)
 		for (let i = 0; i < m; i++) {
 			for (let j = 0; j < m; j++) {
-				Mx[i + m][j + m] = U.x[i][j]
-				My[i + m][j + m] = U.y[i][j]
+				Mx[i + m][j + m] = matrix.x[i][j]
+				My[i + m][j + m] = matrix.y[i][j]
 			}
 		}
 		return new numeric.T(Mx, My)
@@ -88,7 +88,7 @@ module.exports = class Circuit {
 	// Returns a transformation over the entire the register which applies U to the specified qubits in order given
 	// Algorithm from Lee Spector's "Automatic Quantum Computer Programming"
 	
-	expandMatrix(size, U, qubits) {
+	expand(matrix, size, qubits) {
 		
 		const qubits_ = []
 		const n = Math.pow(2, size)
@@ -108,15 +108,15 @@ module.exports = class Circuit {
 		while (i--) {
 			let j = n
 			while (j--) {
-				let equal = true
+				let equals = true
 				let k = qubits_.length
 				while (k--) {
 					if ((i & (1 << qubits_[k])) != (j & (1 << qubits_[k]))) {
-						equal = false
+						equals = false
 						break
 					}
 				}
-				if (equal) {
+				if (equals) {
 					let istar = 0
 					let jstar = 0
 					let k = qubits.length
@@ -125,8 +125,8 @@ module.exports = class Circuit {
 						istar |= ((i & (1 << q)) >> q) << k
 						jstar |= ((j & (1 << q)) >> q) << k
 					}
-					X[i][j] = U.x[istar][jstar]
-					Y[i][j] = U.y[istar][jstar]
+					X[i][j] = matrix.x[istar][jstar]
+					Y[i][j] = matrix.y[istar][jstar]
 				}
 			}
 		}
