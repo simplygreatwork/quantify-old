@@ -3550,9 +3550,9 @@ gates.srn = function() {
 },{"../lib/numeric.js":1}],5:[function(require,module,exports){
 
 module.exports = {
-	circuit: require('./circuit'),
+	Circuit: require('./circuit'),
 	gates: require('./gates'),
-	chain: require('./chain'),
+	Chain: require('./chain'),
 	numeric: require('../lib/numeric')
 }
 
