@@ -3307,8 +3307,8 @@ module.exports = class Chain {
 
 },{"./gates":4}],3:[function(require,module,exports){
 
-let numeric = require('../lib/numeric.js')
-let Chain = require('./chain')
+const numeric = require('../lib/numeric.js')
+const Chain = require('./chain')
 
 module.exports = class Circuit {
 	
@@ -3316,7 +3316,7 @@ module.exports = class Circuit {
 		
 		this.size = size
 		this.gates = []
-		let squared = Math.pow(2, size)
+		const squared = Math.pow(2, size)
 		this.amplitudes = new numeric.T(numeric.rep([squared], 0), numeric.rep([squared], 0))
 		this.amplitudes.x[parseInt('0000000000', 2)] = 1
 		this.chain = new Chain(this)
@@ -3332,12 +3332,12 @@ module.exports = class Circuit {
 		
 		this.gates.forEach(function(gate, index) {
 			console.log(`Evaluating gate ${index + 1} of ${this.gates.length}.`)
-			let U = gate.matrix(gate.targets.length)
+			let matrix = gate.matrix(gate.targets.length)
 			gate.controls.forEach(function(control) {
-				U = this.controlled(U)
+				matrix = this.controlled(matrix)
 			}.bind(this))
-			var qubits = gate.controls.concat(gate.targets)
-			this.amplitudes = this.expandMatrix(this.size, U, qubits).dot(this.amplitudes)
+			const qubits = gate.controls.concat(gate.targets)
+			this.amplitudes = this.expand(matrix, this.size, qubits).dot(this.amplitudes)
 		}.bind(this))
 		return this
 	}
@@ -3379,15 +3379,15 @@ module.exports = class Circuit {
 	
 	// Returns a version of U controlled by first qubit
 	
-	controlled(U) {
+	controlled(matrix) {
 		
-		let m = U.x.length
-		let Mx = numeric.identity(m * 2)
-		let My = numeric.rep([m * 2, m * 2], 0)
+		const m = matrix.x.length
+		const Mx = numeric.identity(m * 2)
+		const My = numeric.rep([m * 2, m * 2], 0)
 		for (let i = 0; i < m; i++) {
 			for (let j = 0; j < m; j++) {
-				Mx[i + m][j + m] = U.x[i][j]
-				My[i + m][j + m] = U.y[i][j]
+				Mx[i + m][j + m] = matrix.x[i][j]
+				My[i + m][j + m] = matrix.y[i][j]
 			}
 		}
 		return new numeric.T(Mx, My)
@@ -3396,10 +3396,10 @@ module.exports = class Circuit {
 	// Returns a transformation over the entire the register which applies U to the specified qubits in order given
 	// Algorithm from Lee Spector's "Automatic Quantum Computer Programming"
 	
-	expandMatrix(size, U, qubits) {
+	expand(matrix, size, qubits) {
 		
-		let qubits_ = []
-		let n = Math.pow(2, size)
+		const qubits_ = []
+		const n = Math.pow(2, size)
 		qubits = qubits.slice(0)
 		for (let i = 0; i < qubits.length; i++) {
 			qubits[i] = (size - 1) - qubits[i]
@@ -3410,21 +3410,21 @@ module.exports = class Circuit {
 				qubits_.push(i)
 			}
 		}
-		let X = numeric.rep([n, n], 0)
-		let Y = numeric.rep([n, n], 0)
+		const X = numeric.rep([n, n], 0)
+		const Y = numeric.rep([n, n], 0)
 		let i = n
 		while (i--) {
 			let j = n
 			while (j--) {
-				let equal = true
+				let equals = true
 				let k = qubits_.length
 				while (k--) {
 					if ((i & (1 << qubits_[k])) != (j & (1 << qubits_[k]))) {
-						equal = false
+						equals = false
 						break
 					}
 				}
-				if (equal) {
+				if (equals) {
 					let istar = 0
 					let jstar = 0
 					let k = qubits.length
@@ -3433,8 +3433,8 @@ module.exports = class Circuit {
 						istar |= ((i & (1 << q)) >> q) << k
 						jstar |= ((j & (1 << q)) >> q) << k
 					}
-					X[i][j] = U.x[istar][jstar]
-					Y[i][j] = U.y[istar][jstar]
+					X[i][j] = matrix.x[istar][jstar]
+					Y[i][j] = matrix.y[istar][jstar]
 				}
 			}
 		}
