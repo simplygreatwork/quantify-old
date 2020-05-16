@@ -5,7 +5,7 @@ module.exports = class Chain {
 		
 		this.circuit = circuit
 		this.simple(require('./gates'))
-		// this.compound(require('./gates/compound/index'))
+		this.compound(require('./gates/compound/index'))
 	}
 	
 	simple(gates) {
@@ -35,5 +35,11 @@ module.exports = class Chain {
 				return chain
 			}.bind(key)
 		}.bind(this))
+	}
+	
+	evaluate() {
+		
+		this.circuit.evaluate()
+		return this.circuit
 	}
 }

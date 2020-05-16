@@ -4,9 +4,10 @@ const Chain = require('./chain')
 
 module.exports = class Circuit {
 	
-	constructor(size) {
+	constructor(size, options) {
 		
 		this.size = size
+		this.options = options || []
 		this.gates = []
 		const squared = Math.pow(2, size)
 		this.amplitudes = new numeric.T(numeric.rep([squared], 0), numeric.rep([squared], 0))
@@ -23,7 +24,7 @@ module.exports = class Circuit {
 	evaluate() {
 		
 		this.gates.forEach(function(gate, index) {
-			console.log(`Evaluating gate ${index + 1} of ${this.gates.length}.`)
+			if (this.options.verbose) console.log(`Evaluating gate ${index + 1} of ${this.gates.length}.`)
 			let matrix = gate.matrix(gate.targets.length)
 			gate.controls.forEach(function(control) {
 				matrix = this.controlled(matrix)
@@ -31,16 +32,33 @@ module.exports = class Circuit {
 			const qubits = gate.controls.concat(gate.targets)
 			this.amplitudes = this.expand(matrix, this.size, qubits).dot(this.amplitudes)
 		}.bind(this))
+		this.amplitudes = this.amplitudes.div(this.amplitudes.norm2())
 		return this
 	}
 	
 	print() {
 		
-		this.amplitudes = this.amplitudes.div(this.amplitudes.norm2())
+		console.log()
+		console.log('--- STATE -----------------')
 		this.amplitudes.x.forEach(function(each, i) {
-			console.log(`|${this.state_(i)}> ${this.amplitude_(i)} ${this.probability_(i)}`)
+			if (this.probability_(i) != '0.0000%') {
+				console.log(`|${this.state_(i)}> ${this.amplitude_(i)} ${this.probability_(i)}`)
+			}
 		}.bind(this))
 		return this
+	}
+	
+	results(fn) {
+		
+		this.amplitudes.x.forEach(function(each, i) {
+			if (this.probability_(i) != '0.0000%') {
+				fn({
+					state: this.state_(i),
+					amplitude: this.amplitude_(i),
+					probability: this.probability_(i),
+				})
+			}
+		}.bind(this))
 	}
 	
 	state_(indice) {

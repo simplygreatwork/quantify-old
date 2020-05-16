@@ -34,14 +34,6 @@ gates.z = function() {
 	)
 }
 
-gates.z = function() {
-	
-	return new numeric.T (
-		[[1, 0], [0, -1]],
-		numeric.rep([2, 2], 0)
-	)
-}
-
 gates.s = function() {
 	
 	return new numeric.T (
@@ -68,6 +60,8 @@ gates.r4 = function() {
 gates.r8 = function() {
 	return rotate(Math.PI / 8)
 }
+
+gates.t = gates.r8
 
 gates.swap = function() {
 	
