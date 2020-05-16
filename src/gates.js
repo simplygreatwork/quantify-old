@@ -42,6 +42,10 @@ gates.s = function() {
 	)
 }
 
+gates.sdg = function() {
+	return gates.s().transjugate()
+}
+
 const rotate = function(theta) {
 	
 	const x = Math.cos(theta)
@@ -61,7 +65,11 @@ gates.r8 = function() {
 	return rotate(Math.PI / 8)
 }
 
-gates.t = gates.r8
+gates.t = gates.r4
+
+gates.tdg = function() {
+	return gates.t().transjugate()
+}
 
 gates.swap = function() {
 	
