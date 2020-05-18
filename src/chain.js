@@ -37,9 +37,14 @@ module.exports = class Chain {
 		}.bind(this))
 	}
 	
-	evaluate() {
+	verbose() {
 		
-		this.circuit.evaluate()
+		return this.circuit
+	}
+	
+	run() {
+		
+		this.circuit.run(...arguments)
 		return this.circuit
 	}
 }

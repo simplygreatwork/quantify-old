@@ -1,0 +1,81 @@
+
+// when running as verbose, need to print X(2, [0, 1])
+
+const Circuit = require('../src/circuit')
+
+Circuit('example', 2).h(0).x(1, [0]).verbose().run()
+Circuit('example', 2)
+	.h(0)
+	.x(1, [0])
+	.verbose()
+	.run()
+
+Circuit('example', 2).h(0).x(1, [0]).verbose().run()
+Circuit('example', 2)
+	.h(0)
+	.x(1, [0])
+	.verbose()
+	.verbose(true)
+	.verbose(false)
+	.on('gate', function() {		// maybe only do on handlers internally initially
+		console.log('gate')
+	})
+	.on('end', function() {
+		console.log('end')
+	})
+	.run()
+
+// be able to chain print anywhere
+// use long fornm of gates initially: hadamard, pauli_x, pauli_y
+
+Circuit({
+	name: 'example',
+	size: 2,
+	verbose: true
+})
+.h(0)
+.x(1, [0])
+.verbose()
+.verbose(true)
+.verbose(false)
+.on('gate', function() {		// maybe only do on handlers internally initially
+	console.log('gate')
+})
+.on('end', function() {
+	console.log('end')
+})
+.run()
+
+let circuit = Circuit({
+	name: 'example',
+	size: 2,
+	verbose: true
+})
+.h(0).x(1, [0])
+circuit('example').run()
+
+Circuit('example', 2).h(0).cnot(1, 0).verbose().evaluate().print()
+let circuit = Circuit('example', 2)
+circuit.h(0).cnot(1, 0).verbose().evaluate().print()
+
+
+
+Circuit({
+	name: 'bell',
+	size: 2
+})
+.h(0)
+.cnot(1, 0)
+.run({
+	verbose: true,
+	changes: true
+})
+
+
+
+const Circuit = require('../src/circuit')
+
+Circuit('bell', 2).apply()
+	.h(0)
+	.cnot(1, 0)
+.run('verbose filtered changed')

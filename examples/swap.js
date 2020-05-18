@@ -2,11 +2,16 @@
 const Circuit = require('../src/circuit')
 const gates = require('../src/gates')
 
-circuit = new Circuit(2)
-circuit.apply().x(0).evaluate().print()
+Circuit('origin', 2).apply()
+	.x(0)
+.run()
 
-circuit = new Circuit(2)
-circuit.apply().x(0).swap_(0, 1).evaluate().print()
+Circuit('swap-native', 2).apply()
+	.x(1)
+	.swap([0, 1], [])
+.run()
 
-circuit = new Circuit(2)
-circuit.apply().x(1).swap([0, 1], []).evaluate().print()
+Circuit('swap-derived', 2).apply()
+	.x(0)
+	.swap_(0, 1)
+.run()

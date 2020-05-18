@@ -1,9 +1,7 @@
 
 const Circuit = require('../src/circuit')
-const gates = require('../src/gates')
 
-let circuit = new Circuit(2)
-circuit.apply().evaluate().print()
-circuit.apply().x(1, [0]).evaluate().print()
-circuit.apply().x(0).x(1, [0]).evaluate().print()
-circuit.apply().x(0).x(1).x(1, [0]).evaluate().print()
+Circuit('origin', 2).apply().run('verbose')
+Circuit('control off', 2).apply().x(1, [0]).run('verbose')
+Circuit('control on', 2).apply().x(0).x(1, [0]).run('verbose')
+Circuit('control on (inverse)', 2).apply().x(0).x(1).x(1, [0]).run('verbose')

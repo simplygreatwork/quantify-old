@@ -4,5 +4,8 @@
   "description": "A tiny quantum computing simulator. Derived from Davy Wybiral's https://github.com/qcsimulator/",
   "scripts": {},
   "keywords": [],
-  "author": "Philip Weaver"
+  "author": "Philip Weaver",
+  "devDependencies": {
+    "tape": "^5.0.0"
+  }
 }

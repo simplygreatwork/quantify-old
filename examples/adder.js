@@ -2,31 +2,28 @@
 const Circuit = require('../src/circuit.js')
 
 let result = {}
-let circuit = new Circuit(10)
-circuit.apply()
+Circuit('adder', 10).apply()
 	.x(a(0))
 	.x(a(1))
 	.x(a(2))
 	.x(b(3))
-.evaluate()
-.print()
+.run('verbose')
 .results(function(each) {
-	result.a = parseInt(each.state.substring(1, 5).split('').reverse().join(''), 2)
-	result.b = parseInt(each.state.substring(5, 9).split('').reverse().join(''), 2)
+	result.a = parseInt(each.bits.substring(1, 5).split('').reverse().join(''), 2)
+	result.b = parseInt(each.bits.substring(5, 9).split('').reverse().join(''), 2)
 })
 
-circuit = new Circuit(10)
+let circuit = Circuit('adder', 10)
 circuit.apply()
 	.x(a(0))
 	.x(a(1))
 	.x(a(2))
 	.x(b(3))
-	add(circuit, a, b, cin, cout)
+add(circuit, a, b, cin, cout)
 circuit
-.evaluate()
-.print()
+.run('verbose')
 .results(function(each) {
-	result.c = parseInt(each.state.substring(5, 9).split('').reverse().join(''), 2)
+	result.c = parseInt(each.bits.substring(5, 9).split('').reverse().join(''), 2)
 	console.log(`${result.a} + ${result.b} = ${result.c}`)
 })
 
