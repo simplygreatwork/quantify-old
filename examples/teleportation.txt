@@ -1,0 +1,4 @@
+
+so what is the difference between swap and teleport?
+what would happen if the teleportation destination qubit already has state
+is it clobbered, is it copied to the source qubit like swap would do?

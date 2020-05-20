@@ -37,6 +37,16 @@ module.exports = class Chain {
 		}.bind(this))
 	}
 	
+	measure() {
+		
+		return this
+	}
+
+	barrier() {
+		
+		return this
+	}
+	
 	verbose() {
 		
 		return this.circuit

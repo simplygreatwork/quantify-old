@@ -1,0 +1,28 @@
+
+const Circuit = require('../src/circuit')
+
+Circuit('skew-1', 1).apply()
+	.x(0)
+	.h(0)
+	.t(0)
+	.h(0)
+	.x(0)
+.run('verbose')
+
+Circuit('skew-2', 1).apply()
+	.x(0)
+	.h(0)
+	.t(0)
+	.t(0)
+	.t(0)
+	.h(0)
+	.x(0)
+.run('verbose')
+
+Circuit('skew-3', 1).apply()
+	.x(0)
+	.h(0)
+	.tdg(0)
+	.h(0)
+	.x(0)
+.run('verbose')

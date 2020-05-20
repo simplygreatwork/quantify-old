@@ -1,6 +1,23 @@
 
 const Circuit = require('../src/circuit')
-const gates = require('../src/gates')
+
+Circuit('s', 1).apply()
+	.s(0)
+.run('verbose')
+
+Circuit('xs', 1).apply()
+	.x(0)
+	.s(0)
+.run('verbose')
+
+Circuit('t', 1).apply()
+	.t(0)
+.run('verbose')
+
+Circuit('xt', 1).apply()
+	.x(0)
+	.t(0)
+.run('verbose')
 
 Circuit('phase-s', 1).apply()
 	.x(0)

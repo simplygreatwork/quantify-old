@@ -2,6 +2,7 @@
 const numeric = require('../lib/numeric.js')
 const Chain = require('./chain')
 const circuits = {}
+const precision = 20
 
 class Circuit {
 	
@@ -103,29 +104,29 @@ class Circuit {
 		return results
 	}
 	
-	bits_(indice) {
+	bits_(index) {
 		
 		let result = ''
 		for (let i = 0; i < this.size; i++) {
-			result = ((indice & (1 << i)) >> i) + result
+			result = ((index & (1 << i)) >> i) + result
 		}
 		return result
 	}
 	
-	amplitude_(indice) {
+	amplitude_(index) {
 		
 		let result = []
-		result.push(this.amplitudes.x[indice].toFixed(8))
-		result.push(this.amplitudes.y[indice] < 0 ? '-' : '+')
-		result.push(Math.abs(this.amplitudes.y[indice]).toFixed(8) + 'i')
+		result.push(this.amplitudes.x[index].toFixed(precision))
+		result.push(this.amplitudes.y[index] < 0 ? '-' : '+')
+		result.push(Math.abs(this.amplitudes.y[index]).toFixed(precision) + 'i')
 		return result.join('')
 	}
 	
-	probability_(indice) {
+	probability_(index) {
 		
 		return ((
-			Math.pow(this.amplitudes.x[indice], 2) +
-			Math.pow(this.amplitudes.y[indice], 2)
+			Math.pow(this.amplitudes.x[index], 2) +
+			Math.pow(this.amplitudes.y[index], 2)
 		) * 100).toFixed(4) + '%'
 	}
 	
@@ -207,8 +208,10 @@ class Circuit {
 			console.log('-----------------------------------------------------------------------------------')
 			console.log(`\nRunning circuit "${this.name}"`)
 			this.state = this.state_()
-			console.log(`\n  Initial state`)
-			if (this.options.verbose) this.print()
+			if (this.options.verbose) {
+				console.log(`\n  Initial state`)
+				this.print()
+			}
 			this.last = this.state
 		}.bind(this))
 		this.on('circuit-did-run', function(circuit) {
